@@ -1,0 +1,63 @@
+<% include layout/head %>
+
+<% include layout/header %>
+
+<% include layout/nav %>
+
+<% include layout/thanh_trang_thai %>
+<% include thuvien/bodau%>
+<!-- breadcrumbs -->
+
+
+<!-- //breadcrumbs -->
+<!--- beverages --->
+
+<div class="products">
+<div class="container" style="margin-top:-50px">
+  <div class="col-md-12 products-right">
+
+    <% sanpham.forEach(sp => {%>
+      <div class="agile_top_brands_grids">
+        <div class="col-md-3 top_brand_left" style="padding-bottom:30px">
+          <div class="hover14 column">
+            <div class="agile_top_brand_left_grid" style="background:none">
+              <div class="agile_top_brand_left_grid1">
+                <figure>
+                  <div class="snipcart-item block">
+                    <div class="snipcart-thumb"><a href="/chitiet/<%= bo_dau(sp.ten_sp)%>/<%= sp._id%>/<%= sp.ma_loai%>"><img title=" " width="200px" height="150px" alt=" " src="/static/images/<%= thumuc%>/<%= sp.hinh_anh%>"></a>
+                      <div style="height:80px">
+                        <p><%= sp.ten_sp%></p>
+                      </div>
+                      <h4 style="color:#F00; font-size:20px;"><%= (sp.gia_ban).toLocaleString()%> VNĐ</h4>
+                    </div>
+                    <div class="snipcart-details top_brand_home_details">
+                      <form action="#" method="post">
+                        <fieldset>
+                          <input type="hidden" id="don_gia({$san_pham->don_gia})">
+                          <input type="hidden" name="currency_code" value="VND">
+                          <input type="button" id="{$san_pham->ma_san_pham}" don_gia="{$san_pham->don_gia}" value="thêm vào giỏ" class="button" >
+                        </fieldset>
+                      </form>
+                    </div>
+                  </div>
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <%});%>
+      <div class="clearfix"> </div>
+      <nav class="numbering">  </nav>
+
+
+
+    </div>
+
+
+    <div class="clearfix"> </div>
+  </div>
+</div>
+
+
+<% include layout/footer %>

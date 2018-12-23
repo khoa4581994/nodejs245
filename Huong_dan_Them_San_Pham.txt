@@ -1,0 +1,92 @@
+﻿Thêm
+
+b1 Ứng dụng  cài đặt : npm i express-fileupload --s
+
+b2 app.js
+
+fileUpload = require('express-fileupload'); // Upload file
+// default options
+app.use(fileUpload());
+
+
+b3
+
+Cung cấp tập tin: themdienthoai.ejs
+
+
+b4 routes/admin.js 
+
+// Thêm điện thoại: view
+router.get('/them-dien-thoai',requireLogin, function (req, res) {
+  
+  res.render('themdienthoai', {
+    Cua_hang: Du_lieu.Cua_hang,
+  })
+})
+
+// Xử lý thêm vào CSDL & Upload Hình
+
+router.post('/ghi-dien-thoai-moi', function (req, res) {
+  var Ma_so = Lay_Ma_so_cuoi(req.body.Nhom_Dien_thoai)
+  var Ten = req.body.Ten
+  var Don_gia_Nhap = Number(req.body.Don_gia_Nhap)
+  var Don_gia_Ban = Number(req.body.Don_gia_Ban)
+  var Nhom_Dien_thoai_Ten = req.body.Nhom_Dien_thoai
+  var Nhom_Dien_thoai_Ma_so = req.body.Nhom_Dien_thoai
+  var Dien_thoai = {
+    "Ten": Ten,
+    "Ma_so": Ma_so,
+    "Don_gia_Ban": Don_gia_Ban,
+    "Don_gia_Nhap": Don_gia_Nhap,
+    "Nhom_Dien_thoai": {
+      "Ten": Nhom_Dien_thoai_Ten,
+      "Ma_so": Nhom_Dien_thoai_Ma_so
+    },
+    "Danh_sach_Phieu_Dat": [],
+    "Danh_sach_Phieu_Ban": [],
+    "Danh_sach_Phieu_Nhap": []
+  }
+
+  // Thêm vào CSDL
+  var kq = xl_mongo.them_doi_tuong("Dien_thoai", Dien_thoai)
+  // Upload hình
+  var hinh = req.files.hinh;
+  var ten_hinh = `${Ma_so}.png`
+  hinh.mv(`./public/images/${ten_hinh}`, function (err) {
+    if (err)
+      return res.status(500).send(err);
+
+    //res.send('File uploaded!');
+  });
+  Du_lieu.Danh_sach_Dien_thoai.push(Dien_thoai)
+  //console.log(Dien_thoai)
+  res.redirect('/admin/quan-tri')
+
+})
+
+
+function Lay_Ma_so_cuoi(nhom) {
+  Nhom_Dien_thoai = nhom;
+  var Danh_sach_Ma_so = []
+  Du_lieu.Danh_sach_Dien_thoai.forEach(Dien_thoai => {
+    if (Dien_thoai.Nhom_Dien_thoai.Ma_so == Nhom_Dien_thoai) {
+      var Thanh_phan_con = Dien_thoai.Ma_so.trim().split("_")
+      Danh_sach_Ma_so.push(parseInt(Thanh_phan_con[1]))
+    }
+
+  })
+
+  Danh_sach_Ma_so.sort(function (a, b) {
+    return a - b
+  })
+
+  var Ma_so_Sau_cung = Danh_sach_Ma_so[Danh_sach_Ma_so.length - 1]
+  Ma_so_Sau_cung += 1
+  var Ma_so = Nhom_Dien_thoai + "_" + Ma_so_Sau_cung.toString()
+  return Ma_so
+}
+
+
+
+
+

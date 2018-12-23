@@ -1,0 +1,37 @@
+﻿quan_tri.ejs
+
+<div class="row m-2">
+            <div class="col-md-6">
+                <a href="/admin/them-dien-thoai" class="btn btn-sm btn-outline-danger">Thêm Điện thoại</a>
+            </div>
+            <div class="col-md-6 text-right">
+                <form method="POST" action="/admin/tim" onsubmit="return Kiem_tra_gia_tri_Tim()">
+                    <input type="text" required class="btn btn-sm border border-danger text-left" id="Th_Tim" name="Th_Tim" size="40" placeholder="Nhập giá trị tìm ...Enter">
+                    <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-search" aria-hidden="true"></i></button>
+                </form>
+            </div>
+        </div>
+
+
+function Kiem_tra_gia_tri_Tim() {
+            var Hop_le = true
+            if (Th_Tim.value.trim() == "") {
+                alert('Nhập giá trị tìm')
+                Th_Tim.focus()
+                Hop_le = false
+            }
+            return Hop_le
+        }
+
+routes/dmin.js
+
+router.post('/tim',function (req,res){
+  var gtTim=req.body.Th_Tim.trim()
+  var ds=Du_lieu.Danh_sach_Dien_thoai.filter(x=>x.Ten.toLowerCase().includes(gtTim.toLowerCase()))
+  res.render('quan_tri', {
+    Cua_hang: Du_lieu.Cua_hang,
+    Danh_sach_Dien_thoai:ds ,
+    Thong_bao: ""
+  });
+  
+})

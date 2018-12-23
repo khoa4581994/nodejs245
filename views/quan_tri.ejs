@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container-fluid">
+
+        <div class="text-right">
+            <img src="/images/<%=Nguoi_dung.Ma_so%>.png" style="width:4rem">
+            <span class="text-primary ml-2">Chào
+                <%=Nguoi_dung.Nhom_Nguoi_dung.Ten%>:
+                <%=Nguoi_dung.Ten%></span> -
+            <a href="/admin/thoat-dang-nhap" class="mr-2 text-danger">Thoát Ứng dụng</a>
+        </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <div class="h4" style="float: left; margin-right:2rem"><a href="/admin/them-dien-thoai" class="btn btn-sm btn-outline-danger">Thêm Điện thoại</a></div>
+        <div class="w3l_search">
+
+            <form action="/admin/tim_kiem_sp" method="post" onsubmit="return Kiem_tra_gia_tri_Tim()">
+                <input id="keyword" name="k" type="search" placeholder="Tìm sản phẩm..." id="Th_Tim" required>
+                <button type="submit" class="btn btn-default search" onclick="kiem_tra_tim_kiem_sp()" name="btn_tim_kiem" aria-label="Left Align">
+					<i class="fa fa-search" aria-hidden="true"> </i>
+				</button>
+
+            </form>
+        </div>
+        <div class="col-md-12 border">
+            <h2 class="text-primary">Danh sách Điện thoại</h2>
+
+            <table class="table table-striped">
+                <thead class="thead-inverse">
+                    <tr class="bg-primary text-white">
+                        <th>Mã Điện thoại</th>
+                        <th>Tên Điện thoại</th>
+                        <th>Đơn giá Nhập</th>
+                        <th>Đơn giá Bán</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% ds_Dien_thoai.forEach((dienthoai)=> {%>
+                        <% chuoi=JSON.stringify(dienthoai)  %>
+                            <tr>
+                                <td scope="row">
+                                    <%#= dienthoai.Ma_so %> <img src="/images/images/<%= dienthoai.Ma_so %>.png" style="width:50px">
+                                </td>
+                                <td>
+                                    <%= dienthoai.Ten %>
+                                </td>
+                                <td>
+                                    <%= Number(dienthoai.Don_gia_Nhap).toLocaleString()%>đ</td>
+                                <td>
+                                    <%= Number(dienthoai.Don_gia_Ban).toLocaleString() %>đ</td>
+                                <td>
+                                    <div onclick="Hien_thi_Dien_thoai_Sua('<%= chuoi %>')" class="fa fa-edit btn btn-sm btn-outline-primary"></div>
+                                </td>
+                                <td>
+                                    <div class="fa fa-remove btn btn-sm btn-outline-primary" onclick="Hoi_Xoa('<%= chuoi %>')"></div>
+                                </td>
+                            </tr>
+                            <% }) %>
+                </tbody>
+            </table>
+        </div>
+
+
+
+
+
+    </div>
+    <!-- Button trigger modal -->
+    <button type="button" id="Th_Modal" class="btn btn-primary btn-lg d-none" data-toggle="modal" data-target="#modelId">
+        Launch
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" data-backdrop="static" data-keyboard="false" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cập nhật Sản phẩm</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="Th_Chi_tiet">
+
+                </div>
+                <div class="modal-footer">
+                    <!--
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save</button>
+                    -->
+                    <button id="Th_Cap_nhat" class="fa fa-edit btn btn-sm btn-outline-primary"> Cập nhật giá</button>
+                    <button class="fa fa-remove btn btn-sm btn-outline-primary" data-dismiss="modal"> Bỏ qua</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script>
+        Th_Cap_nhat.onclick = () => {
+                fetch('./cap-nhat-dien-thoai', {
+                    method: 'put',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        'Ma_so': Th_Ma_so.value,
+                        'Ten': Th_Ten.value,
+                        'Don_gia_Nhap': Th_Don_gia_Nhap.value,
+                        'Don_gia_Ban': Th_Don_gia_Ban.value
+                    })
+                }).then(response => {
+                    if (response.ok) return response.json()
+                }).then(data => {
+                    //alert(data.Ten)
+                    window.location.reload()
+
+
+                })
+
+            }
+            /*
+        Th_Xoa.onclick = () => {
+            fetch('xoa_dien_thoai', {
+                method: 'delete',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    'Ma_so': Th_Ma_so.value,
+    
+                })
+            }).then(response => {
+                window.location.reload()
+            })
+    
+    
+        }*/
+
+        function Kiem_tra_gia_tri_Tim() {
+            var Hop_le = true
+            if (Th_Tim.value.trim() == "") {
+                alert('Nhập giá trị tìm')
+                Th_Tim.focus()
+                Hop_le = false
+            }
+            return Hop_le
+        }
+
+        function Hoi_Xoa(chuoi) {
+            var dien_thoai = JSON.parse(chuoi)
+            if (confirm(`Lưu ý !!!\nỨng dụng sẽ xóa sản phẩm: ${dien_thoai.Ten}.`)) {
+                fetch('./xoa-dien-thoai', {
+                    method: 'delete',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        'Ma_so': dien_thoai.Ma_so,
+                    })
+                }).then(response => {
+                    window.location.reload()
+                })
+            }
+        }
+
+        function Hien_thi_Dien_thoai_Sua(chuoi) {
+            var dien_thoai = JSON.parse(chuoi)
+
+            var html = `
+            <div class="form-group">
+      <label for="Th_Ma_so">Mã số</label>
+      <input type="text" placeholder="Mã số " value="${dien_thoai.Ma_so}" class="form-control" name="Ma_so" id="Th_Ma_so" readonly>
+      <label for="Th_Ten">Tên Điện thoại</label>
+      <input type="text" placeholder="Tên điện thoại" class="form-control" value="${dien_thoai.Ten}" name="Ten" id="Th_Ten">
+      <label for="Th_Don_gia_Ban">Đơn giá Nhập</label>
+      <input type="text" placeholder="Đơn giá nhập" value="${dien_thoai.Don_gia_Nhap}" class="form-control" name="Don_gia_Nhap" id="Th_Don_gia_Nhap">
+      <label for="Th_Don_gia_Ban">Đơn giá Bán</label>
+      <input type="text" placeholder="Đơn giá bán" value="${dien_thoai.Don_gia_Ban}" class="form-control" name="Don_gia_Ban" id="Th_Don_gia_Ban">
+      
+    </div>
+            `
+            Th_Chi_tiet.innerHTML = html
+            Th_Modal.click()
+
+        }
+    </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</body>
+
+</html>

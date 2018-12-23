@@ -1,0 +1,60 @@
+<!-- header -->
+<%
+var dem=0
+if(Gio_hang){
+        dem=Gio_hang.length 
+}
+%>
+    <div class="agileits_header">
+        <div class="container">
+            <div class="w3l_offers">
+                <a href="/" style="float:left"><img src="/images/logo/logo.png" height="38px" /></a>
+                <div class="text-right mr-2 mt-2 fixed-top" style="float: right;">
+                    <a class="btn btn-sm border border-danger" href="<%= dem>0?'/xem-gio-hang':'/' %>" style="color: ivory">
+                        <i class="fa fa-shopping-cart" style="color: ivory"></i> (
+                        <%=dem %> )
+                    </a>
+                </div>
+                <div style="float:right" class="agile-login">
+                    <ul>
+
+                        <li><a href="/dangky"> Đăng ký </a></li>
+                        <li><a href="/dangnhap"> Đăng nhập </a></li>
+
+                    </ul>
+                </div>
+
+            </div>
+            <div class="w3l_search">
+
+                <form action="/tim_kiem" method="post">
+                    <input id="keyword" name="q" type="search" placeholder="Tìm sản phẩm..." required>
+                    <button type="submit" class="btn btn-default search" onclick="kiem_tra_tim_kiem()" name="btn_tim_kiem" aria-label="Left Align">
+					<i class="fa fa-search" aria-hidden="true"> </i>
+				</button>
+
+                </form>
+            </div>
+
+
+            <div class="btn float-right pr-5 btn-group">
+
+                <select class="btn btn-sm border border-danger ml-1" onchange="Xuat_Dien_thoai_theo_Don_gia(this.value)">
+							<option value="0-50000000">Lọc Điện thoại theo Đơn giá Bán</option>
+							<option value="0-2000000">Đơn giá Bán dưới 2 triệu </option>
+							<option value="2000000-4000000">Đơn giá Bán lớn 2 triệu và nhỏ 4 triệu </option>
+							<option value="4000000-50000000">Đơn giá Bán lớn 4 triệu </option>
+						</select>
+                <a class="btn btn-sm border border-danger ml-1 mr-1 " href="/sap-tang" id="Th_Tang">
+                    <i class="fa fa-sort-alpha-asc" style="color: ivory"></i>
+                </a>
+                <a class="btn btn-sm border border-danger  " href="/sap-giam" id="Th_Giam" ">
+							<i class="fa fa-sort-alpha-desc " style="color: ivory "></i>
+						</a>
+					</div>
+
+    </div>
+</div>
+
+
+<!-- //header -->

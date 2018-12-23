@@ -1,0 +1,26 @@
+<% include ../layout/head %>
+
+<% include ../layout/header %>
+
+<% include ../layout/nav %>
+
+<% include ../layout/thanh_trang_thai %>
+<div class="container">
+  <button type="button" class="btn btn-info btn-lg disabled" name="button" ">Đổi mật khẩu</button>
+  <button type="button" class="btn btn-info btn-lg" name="button" onclick="window.location='/users'">Thông tin cá nhân</button>
+  <button type="button" class="btn btn-info btn-lg" name="button" onclick="window.location='/users/don-hang'">Thông tin đơn hàng</button>
+</div>
+<div class="register">
+  <div class="container">
+    <div class="login-form-grids">
+      <form  method="post">
+        <input type="password" name="" id="" placeholder="Mật khẩu hiện tại..." required >
+        <input type="password" name="" id="" placeholder="Mật khẩu mới..." required >
+        <input type="password" name="" id="" placeholder="Mhật lại mật khẩu mới..." required >
+        <input type="submit" name="btn_dang_ky" value="Cập nhật" onclick="return kiem_tra_thong_tin_dang_ky()">
+      </form>
+    </div>
+
+  </div>
+</div>
+ <% include ../layout/footer %>

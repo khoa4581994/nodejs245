@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+
+<body>
+    <h2 class="text-center text-primary" id="Th_Thong_bao">
+        Giỏ hàng của bạn</h2>
+    <div id="Th_Xac_nhan">
+        <table class="table table-striped table-inverse">
+            <thead class="thead-inverse">
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th>Tên </th>
+                    <th>Giá Bán</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                        var tong_tien=0
+                    %>
+                    <% Gio_hang.forEach(Dien_thoai=>{%>
+                        <tr Ma_so="<%=Dien_thoai.Ma_so%>" Don_gia_Ban="<%=Dien_thoai.Don_gia_Ban%>" class="dong">
+                            <td scope="row"><img src="/images/images/<%=Dien_thoai.Ma_so%>.png" style="width:5rem"></td>
+                            <td>
+                                <%=Dien_thoai.Ten %>
+                            </td>
+                            <td>
+                                <%=Number(Dien_thoai.Don_gia_Ban).toLocaleString() %>đ
+                            </td>
+                            <td><input type="number" min=1 max="5" value="<%=Dien_thoai.So_luong %>" class="text-right">
+
+                            </td>
+                            <td>
+                                <%=Number(Dien_thoai.Thanh_tien).toLocaleString() %>đ
+                            </td>
+                        </tr>
+
+                        <%
+                        tong_tien+=Number(Dien_thoai.Thanh_tien)
+                    })
+                    %>
+                            <tr>
+                                <td colspan="5" class="text-right text-danger pr-2">
+                                    <strong>Tổng thành tiền:
+                                    <%=Number(tong_tien).toLocaleString()%>đ</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="5" class="text-center">
+                                    <button class="btn btn-sm btn-primary" type="button" id="Th_Dat_hang" data-toggle="modal" data-target="#modelId">Đặt
+                                    hàng</button>
+                                    <button class="btn btn-sm btn-danger" onclick="window.location='/xoa-gio-hang'">Hủy Đơn hàng</button>
+                                    <button class="btn btn-sm btn-success" onclick="window.location='/'">Mua hàng tiếp</button>
+                                </td>
+                            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">THÔNG TIN KHÁCH HÀNG</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="Th_Ho_ten">Họ tên: </label>
+                        <input type="text" class="form-control" id="Th_Ho_ten">
+                    </div>
+                    <div class="form-group">
+                        <label for="Th_Email">Email: </label>
+                        <input type="text" class="form-control" id="Th_Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="Th_Dien_thoai">Điện thoại: </label>
+                        <input type="text" class="form-control" id="Th_Dien_thoai">
+                    </div>
+                    <div class="form-group">
+                        <label for="Th_Dia_chi">Địa chỉ Giao hàng:</label>
+                        <input type="text" class="form-control" id="Th_Dia_chi">
+                    </div>
+                    <div class="form-group">
+                        <label for="Th_Ngay_Giao_hang">Ngày Giao hàng:</label>
+                        <input type="date" class="form-control" id="Th_Ngay_Giao_hang">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="Th_Lam_lai">Làm lại</button>
+                    <button type="button" class="btn btn-primary" id="Th_Dong_y">Đồng ý</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        Th_Dong_y.onclick = () => {
+            var dsDat = []
+            var Dong = document.querySelectorAll(".dong")
+            var Khach_hang = {
+                "Ho_ten": Th_Ho_ten.value,
+                "Dien_thoai": Th_Dien_thoai.value,
+                "Email": Th_Email.value,
+                "Dia_chi": Th_Dia_chi.value
+            }
+            Dong.forEach(d => {
+                var Ma_so = d.getAttribute("Ma_so")
+                var Don_gia_Ban = d.getAttribute("Don_gia_Ban")
+                var So_luong = d.cells[3].childNodes[0].value
+                var Phieu_Dat = {
+                    "Ngay_Dat_hang": new Date().toLocaleString(),
+                    "Ngay_Giao_hang": Th_Ngay_Giao_hang.value.toLocaleString(),
+                    "So_luong": Number(So_luong),
+                    "Don_gia_Ban": Number(Don_gia_Ban),
+                    "Tien": Don_gia_Ban * So_luong,
+                    "Trang_thai": "CHUA_GIAO_HANG",
+                    "Khach_hang": Khach_hang
+                }
+
+                var Dien_thoai = {
+                    "Ma_so": Ma_so,
+                    "Phieu_Dat": Phieu_Dat
+                }
+                dsDat.push(Dien_thoai)
+                    //console.log(dsDat)
+
+                // Cập nhật CSDL
+                fetch('./khach-dat-hang', {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dsDat)
+                }).then(response => {
+                    if (response.ok) return response.json()
+                }).then(data => {
+                    if (data.Thong_bao == "OK") {
+
+                        Th_Lam_lai.click()
+                        Th_Thong_bao.innerHTML = `<strong>Cám ơn Quí khách đã mua hàng. Xác nhận Đơn hàng</strong><br>`
+                        Th_Thong_bao.innerHTML += `
+                                    Chào Quí khách: ${dsDat[0].Phieu_Dat.Khach_hang.Ho_ten}<br>
+                                    Nhân viên Chúng tôi sẽ giao hàng theo địa chỉ: ${dsDat[0].Phieu_Dat.Khach_hang.Dia_chi}<br>
+                                    Liên hệ quí khách qua số điện thoại: ${dsDat[0].Phieu_Dat.Khach_hang.Dien_thoai}<br>
+                                    Email: ${dsDat[0].Phieu_Dat.Khach_hang.Email}<br>
+                                    <button class="btn btn-primary" onclick="window.location='/'" >Xác nhận</button>
+                                `
+                        Th_Xac_nhan.innerHTML = ""
+                    }
+
+
+                })
+            })
+        }
+    </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</body>
+
+</html>

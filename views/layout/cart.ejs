@@ -1,0 +1,12 @@
+<%
+var dem=0
+if(Gio_hang){
+        dem=Gio_hang.length 
+}
+%>
+<div class="text-right mr-2 mt-2 fixed-top">
+        <a class="btn btn-sm border border-danger" href="<%= dem>0?'/xem-gio-hang':'/' %>">
+                <i class="fa fa-shopping-cart"></i> (
+                <%=dem %> )
+        </a>
+</div>

@@ -1,0 +1,47 @@
+<% include layout/head %>
+
+<% include layout/header %>
+
+<% include layout/nav %>
+
+<% include layout/thanh_trang_thai %>
+<!-- contact -->
+	<div class="about">
+		<div class="w3_agileits_contact_grids">
+			<div class="col-md-6 w3_agileits_contact_grid_left">
+				<div class="agile_map">
+					<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.066626251177!2d106.62639741533431!3d10.806209161596852!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752be27d8b4f4d%3A0x92dcba2950430867!2zVHLGsOG7nW5nIMSQYcyjaSBIb8yjYyBDw7RuZyBuZ2hp4buHcCBUaOG7sWMgcGjhuqltIFRwLiBIQ00!5e0!3m2!1svi!2sus!4v1541651413451" width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen></iframe>
+				</div>
+
+			</div>
+			<div class="col-md-6 w3_agileits_contact_grid_right">
+				<h2 class="w3_agile_header">liên hệ</h2>
+
+				<form action="#" method="post">
+					<span class="input input--ichiro">
+						<input class="input__field input__field--ichiro"  type="text" id="input-25" value="{if isset($smarty.session.khach_hang_ho_ten)}{$smarty.session.khach_hang_ho_ten}{/if}" name="ho_ten" placeholder=" " required />
+						<label class="input__label input__label--ichiro" for="input-25">
+							<span class="input__label-content input__label-content--ichiro">Họ tên</span>
+						</label>
+					</span>
+					<span class="input input--ichiro">
+						<input class="input__field input__field--ichiro" type="email" id="input-26" value="{if isset($smarty.session.khach_hang_email)}{$smarty.session.khach_hang_email}{/if}" name="email" placeholder=" " requred />
+						<label class="input__label input__label--ichiro" for="input-26">
+							<span class="input__label-content input__label-content--ichiro">Email</span>
+						</label>
+					</span>
+                    <span class="input input--ichiro">
+						<input class="input__field input__field--ichiro" type="text" id="input-27" value="{if isset($smarty.session.khach_hang_dien_thoai)}{$smarty.session.khach_hang_dien_thoai}{/if}" name="dien_thoai" placeholder=" " required />
+						<label class="input__label input__label--ichiro" for="input-27">
+							<span class="input__label-content input__label-content--ichiro">Điện thoại</span>
+						</label>
+					</span>
+					<textarea name="noi_dung" placeholder="Lời nhắn..." required></textarea>
+					<input type="submit" name="submit" value="Gửi">
+				</form>
+			</div>
+			<div class="clearfix"> </div>
+		</div>
+	</div>
+<!-- contact -->
+<% include layout/footer %>

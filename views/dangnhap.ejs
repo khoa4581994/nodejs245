@@ -1,0 +1,29 @@
+<% include layout/head %>
+
+<% include layout/header %>
+
+<% include layout/nav %>
+
+<% include layout/thanh_trang_thai %>
+<!-- login -->
+	<div class="login">
+		<div class="container">
+			<h2>Đăng nhập</h2>
+
+			<div class="login-form-grids animated wow slideInUp" data-wow-delay=".5s">
+				<form method="post" action="/dangnhap">
+					<input type="text" name="ten_dang_nhap" id="dang_nhap_ten_dang_nhap" placeholder="Tên đăng nhập" required >
+					<input type="password" name="mat_khau" id="dang_nhap_mat_khau" placeholder="Mật khẩu" required >
+
+					<input type="submit" name="btn_dang_nhap" onclick="return kiem_tra_thong_tin_dang_nhap()" value="Đăng nhập">
+				</form>
+			</div>
+			<h4>Thành viên mới</h4>
+			<p><a href="dang_ky">Đăng ký</a> (hoặc) Quay lại <a href=".">Trang chủ<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></p>
+		</div>
+
+	</div>
+
+<!-- //login -->
+
+<% include layout/footer %>

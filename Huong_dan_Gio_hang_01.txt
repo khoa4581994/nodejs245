@@ -1,0 +1,87 @@
+﻿b1 Cung cấp trang: cart.ejs
+
+b2 include cart.ejs vào trang: 
+	chitietsanpham.ejs
+	index.ejs
+
+b3 chitietsanpham.ejs
+
+Thêm input số lượng, Xử lý Chọn Mua
+
+Thông tin: Ma_so, So_luong_Mua -> Gởi về Server xử lý: Lưu vào Session
+
+code HTML
+
+<hr>
+            <div class="float-left">
+                <p>Số lượng: <input type="number" min=1 max=5 id="Th_So_luong" value="1" class="text-right"></p>
+            </div>
+            <div class="float-right btn btn-sm btn-outline-danger">
+
+                <a class="nav-link " href="javacsript:void(0)" id="Th_Mua">
+                    <i class="fa fa-shopping-cart"></i> Mua
+                </a>
+            </div>
+
+
+<script>
+    Th_Mua.onclick = () => {
+        var dtMua={
+            Ma_so: '<%=Dien_thoai.Ma_so%>',
+            So_luong:Number(Th_So_luong.value)
+        }
+        //console.log(dtMua)
+        fetch('/them-gio-hang', {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dtMua)
+        }).then(response => {
+            if (response.ok) return response.json()
+        }).then(data => {
+            //alert(JSON.stringify(data))
+            alert(`Đã thêm: ${data.length} Sản phẩm vào giỏ hàng`)
+            window.location.reload()
+        })
+
+    }
+</script>
+
+------------------ Server
+routes/index.js
+
+// Giỏ hàng của bạn
+router.post('/them-gio-hang', function (req, res) {
+  // Thêm vào giỏ
+  var Dien_thoai = Du_lieu.Danh_sach_Dien_thoai.find(x => x.Ma_so == req.body.Ma_so);
+  var Dien_thoai_tmp = {
+    Ma_so: Dien_thoai.Ma_so,
+    Ten: Dien_thoai.Ten,
+    Nhom_Dien_thoai: Dien_thoai.Nhom_Dien_thoai.Ma_so,
+    So_luong: req.body.So_luong,
+    Don_gia_Ban: Number(Dien_thoai.Don_gia_Ban),
+    Thanh_tien: req.body.So_luong * Number(Dien_thoai.Don_gia_Ban)
+  }
+
+  var ds = []
+  
+  if (typeof req.gio_hang.Gio_hang !== "undefined") {
+    ds = req.gio_hang.Gio_hang
+    var kiem_tra = 0
+    ds.forEach(function (dt) {
+      if (dt.Ma_so == Dien_thoai.Ma_so) {
+        dt.So_luong = req.body.So_luong
+        dt.Thanh_tien = req.body.So_luong * Number(Dien_thoai.Don_gia_Ban)
+        kiem_tra = 1
+      }
+    })
+    if (kiem_tra == 0) {
+      ds.push(Dien_thoai_tmp)
+    }
+  } else {
+    ds.push(Dien_thoai_tmp)
+  }
+
+
+  req.gio_hang.Gio_hang = ds
+  res.send(JSON.stringify(req.gio_hang.Gio_hang))
+})

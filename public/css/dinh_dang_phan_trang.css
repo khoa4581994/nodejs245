@@ -1,0 +1,22 @@
+/* Phân trang */
+.div_phan_trang
+{
+	margin:10px;
+	width:100%;
+	text-align:center;
+	height:50px;
+}
+.div_trang
+{
+	width:30px;
+	padding:5px 10px 5px 10px;
+	text-align:center;
+	background:#F5D7BA;
+	margin:2px;
+}
+.div_trang a
+{
+	text-decoration:none;
+}
+/* kết thúc Phân trang */
+

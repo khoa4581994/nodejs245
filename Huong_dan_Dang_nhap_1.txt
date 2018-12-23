@@ -1,0 +1,78 @@
+﻿routes/admin.js
+// Gọi Đăng nhập
+router.get('/', function (req, res, next) {
+  res.render('dang_nhap', {
+    Cua_hang: Du_lieu.Cua_hang,
+    Thong_bao: ""
+  });
+});
+
+// Xử lý đăng nhập
+router.post("/dang-nhap", function (req, res, next) {
+  var Ten = req.body.Ten_Dang_nhap
+  var Mat_khau = req.body.Mat_khau
+  var Nguoi_dung = Du_lieu.Danh_sach_Nguoi_dung.find(x => x.Ten_Dang_nhap.toLowerCase() == Ten.toLowerCase())
+  if (!Nguoi_dung) {
+    res.render('dang_nhap', {
+      Cua_hang: Du_lieu.Cua_hang,
+      Thong_bao: "Người dùng không tồn tại"
+    });
+  } else {
+    if (Mat_khau.toLowerCase() === Nguoi_dung.Mat_khau.toLowerCase()) {
+      // sets a cookie with the user's info
+      req.session.Nguoi_dung = Nguoi_dung;
+      res.redirect('/admin/quan-tri'); // Đăng nhập thành công chuyển trang
+
+    } else {
+      res.render('dang_nhap', {
+        Cua_hang: Du_lieu.Cua_hang,
+        Thong_bao: "Mật khẩu không đúng"
+      });
+    }
+  }
+});
+// Thoát đăng nhập
+router.get('/thoat-dang-nhap', function (req, res) {
+  req.session.reset();
+  //req.session.Nguoi_dung = null;
+  //res.locals.Nguoi_dung = req.session.Nguoi_dung
+  res.redirect('/admin');
+})
+
+//////////////////////////////// Trang quản trị
+
+router.get('/quan-tri', requireLogin, function (req, res) {
+  res.render('quan_tri', {
+    Cua_hang: Du_lieu.Cua_hang,
+    Danh_sach_Dien_thoai: Du_lieu.Danh_sach_Dien_thoai,
+    Thong_bao: ""
+  });
+});
+
+
+
+
+function requireLogin(req, res, next) {
+  if (!req.session.Nguoi_dung) {
+    res.redirect('/admin');
+  } else {
+    next();
+  }
+};
+
+--------------------------------------------------------
+
+quan_tri.ejs
+<%- contentFor('noi_dung') %>
+<div class="container-fluid">
+
+    <div class="text-right">
+        <img src="/images/<%=Nguoi_dung.Ma_so%>.png" style="width:4rem">
+        <span class="text-primary ml-2">Chào
+            <%=Nguoi_dung.Nhom_Nguoi_dung.Ten%>:
+            <%=Nguoi_dung.Ten%></span> -
+        <a href="/admin/thoat-dang-nhap" class="mr-2 text-danger">Thoát Ứng dụng</a>
+    </div>
+
+</div>
+

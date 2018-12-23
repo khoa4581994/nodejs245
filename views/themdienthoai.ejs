@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container-fluid">
+
+        <div class="text-right">
+            <img src="/images/<%=Nguoi_dung.Ma_so%>.png" style="width:4rem">
+            <span class="text-primary ml-2">Chào
+        <%=Nguoi_dung.Nhom_Nguoi_dung.Ten%>:
+        <%=Nguoi_dung.Ten%></span> -
+            <a href="/admin/thoat-dang-nhap" class="mr-2 text-danger">Thoát Ứng dụng</a>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <h2 class="text-center text-danger">Thêm điện thoại mới</h2>
+            <form action="/admin/ghi-dien-thoai-moi" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="Th_Nhom_Dien_thoai">Nhóm Điện thoại</label>
+                    <select id="Th_Nhom_Dien_thoai" name="Nhom_Dien_thoai">
+            <option value="IPHONE">IPHONE</option>
+            <option value="ANDROID">ANDROID</option>
+          </select>
+                </div>
+                <!--
+        <div class="form-group">
+          <label for="Th_Ma_so">Mã số Điện thoại</label>
+          <input type="text" class="form-control" id="Th_Ma_so" readonly>
+        </div>
+        -->
+                <div class="form-group">
+                    <label for="Th_Ten">Tên Điện thoại</label>
+                    <input type="text" class="form-control" id="Th_Ten" name="Ten" placeholder="Nhập Tên Điện thoại">
+                </div>
+                <div class="form-group">
+                    <label for="Th_Don_gia_Nhap">Đơn giá Nhập</label>
+                    <input type="text" class="form-control" id="Th_Don_gia_Nhap" name="Don_gia_Nhap" placeholder="Nhập Đơn giá Nhập">
+                </div>
+                <div class="form-group">
+                    <label for="Th_Don_gia_Nhap">Đơn giá Bán</label>
+                    <input type="text" class="form-control" id="Th_Don_gia_Ban" name="Don_gia_Ban" placeholder="Nhập Đơn giá Bán">
+                </div>
+                <div class="form-group">
+                    <label for="Th_file">Chọn hình</label>
+                    <input id="Th_file" name="hinh" type="file" onchange="Xem_truoc_Media()" accept="image/png" />
+                    <img id="Th_Hinh_Xem_truoc" style="width:10rem" />
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="fa fa-save btn btn-sm btn-outline-danger"> Cập nhật</button>
+                    <a class="fa fa-undo btn btn-sm btn-outline-primary" href="/admin/quan-tri"> Bỏ qua</a>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-3"> </div>
+    </div>
+    <script>
+        // Xử lý Xem trước Media
+        function Xem_truoc_Media() {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                Th_Hinh_Xem_truoc.src = e.target.result;
+                //console.log(e.target.result)
+            }
+            reader.readAsDataURL(Th_file.files[0]);
+        }
+    </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</body>
+
+</html>
